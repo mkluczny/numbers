@@ -1,8 +1,6 @@
 package com.mkluczny.numbers;
 
 import com.mkluczny.numbers.dictionary.Dictionary;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -17,7 +15,6 @@ public class Encoder {
      *  Private Fields
      */
 
-    private static final Logger LOG = LogManager.getLogger(Encoder.class);
     private final Dictionary dictionary;
 
     /*
