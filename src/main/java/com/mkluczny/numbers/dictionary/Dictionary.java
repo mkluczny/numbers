@@ -39,7 +39,7 @@ public class Dictionary {
      *  Public
      */
 
-    public void build(final List<String> words) {
+    public Dictionary build(final List<String> words) {
 
         LOG.info("Building dictionary...");
 
@@ -59,6 +59,8 @@ public class Dictionary {
         }
 
         LOG.info("Dictionary is ready to be used.");
+
+        return this;
     }
 
     public List<String> get(final String key) {
