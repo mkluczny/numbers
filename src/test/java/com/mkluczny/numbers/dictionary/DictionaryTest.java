@@ -37,4 +37,46 @@ public class DictionaryTest {
         assertThat((dictionary.get("00"))).isEqualTo(wordsEncodedToZeroZero);
         assertThat((dictionary.get("234"))).isEqualTo(wordsEncodedToTwoThreeFour);
     }
+
+    @Test
+    public void shouldSkipToLongWords() throws Exception {
+        // given
+        final List<String> words = asList(wordOfLength(50, 'a'), wordOfLength(51, 'e'));
+
+        // when
+        dictionary.build(words);
+
+        // then
+        assertThat(dictionary.size()).isEqualTo(1);
+    }
+
+    @Test
+    public void shouldSkipWordsAfterFillingUpTheDictionary() throws Exception {
+        // given
+        final List<String> words = new LinkedList<String>();
+
+        for(int i = 0; i < Dictionary.MAX_DICTIONARY_SIZE + 10; i++) {
+            words.add(wordOfLength(1, 'a'));
+        }
+
+        // when
+        dictionary.build(words);
+
+        // then
+        assertThat(dictionary.size()).isEqualTo(Dictionary.MAX_DICTIONARY_SIZE);
+    }
+
+    /*
+     *  Private
+     */
+
+    private String wordOfLength(final int length, final char character) {
+        char[] word  = new char[length];
+
+        for (int i = 0; i < length; i++) {
+            word[i] = character;
+        }
+
+        return new String(word);
+    }
 }

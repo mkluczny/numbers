@@ -1,6 +1,8 @@
 package com.mkluczny.numbers;
 
 import com.mkluczny.numbers.dictionary.Dictionary;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -15,11 +17,13 @@ public class Encoder {
      *  Private Fields
      */
 
+    private static final Logger LOG = LogManager.getLogger(Encoder.class);
     private final Dictionary dictionary;
 
     /*
      *  Constructors
      */
+
     public Encoder(final Dictionary dictionary) {
         this.dictionary = dictionary;
     }
@@ -42,9 +46,9 @@ public class Encoder {
 
                 for (String word : dictionary.get(code)) {
                     if (code.length() == digits.length) {
-                        print(wordsWithNewWord(words, word), originalNumber);
+                        print(union(words, word), originalNumber);
                     } else {
-                        encode(wordsWithNewWord(words, word), copyOfRange(digits, i, digits.length), originalNumber);
+                        encode(union(words, word), copyOfRange(digits, i, digits.length), originalNumber);
                     }
                 }
             }
@@ -55,9 +59,9 @@ public class Encoder {
             final String word = new String(copyOfRange(digits, 0, 1));
 
             if (digits.length > 1) {
-                encode(wordsWithNewWord(words, word), copyOfRange(digits, 1, digits.length), originalNumber);
+                encode(union(words, word), copyOfRange(digits, 1, digits.length), originalNumber);
             } else {
-                print(wordsWithNewWord(words, word), originalNumber);
+                print(union(words, word), originalNumber);
             }
         }
     }
@@ -67,8 +71,7 @@ public class Encoder {
      */
 
     private void print(final List<String> words, final String originalNumber) {
-        StringBuilder builder = new StringBuilder();
-
+        final StringBuilder builder     = new StringBuilder();
         final Iterator<String> iterator = words.iterator();
 
         while (iterator.hasNext()) {
@@ -96,8 +99,8 @@ public class Encoder {
         }
     }
 
-    private LinkedList<String> wordsWithNewWord(final List<String> words, final String element) {
-        LinkedList<String> list = new LinkedList<String>(words);
+    private LinkedList<String> union(final List<String> words, final String element) {
+        final LinkedList<String> list = new LinkedList<String>(words);
         list.add(element);
         return list;
     }
