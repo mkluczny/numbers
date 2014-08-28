@@ -50,4 +50,56 @@ public class NumbersTest {
         // then
         assertThat(outContent.toString()).isEqualTo(new String(readAllBytes(get(results))));
     }
+
+    @Test
+    public void shouldExitIfDictionaryFileNotFound() throws Exception {
+        // given
+        final String dictionary = "not found";
+        final String input      = "src/test/resources/input2.txt";
+
+        // when
+        main(new String[]{dictionary, input});
+
+        // then
+        assertThat(outContent.toString()).isEqualTo("Dictionary file not found\n");
+    }
+
+    @Test
+    public void shouldExitIfInputFileNotFound() throws Exception {
+        // given
+        final String dictionary = "src/test/resources/dictionary2.txt";
+        final String input      = "not found";
+
+        // when
+        main(new String[]{dictionary, input});
+
+        // then
+        assertThat(outContent.toString()).isEqualTo("Input file not found\n");
+    }
+
+    @Test
+    public void shouldExitIfDictionaryFileIsNull() throws Exception {
+        // given
+        final String dictionary = null;
+        final String input      = "src/test/resources/input2.txt";
+
+        // when
+        main(new String[]{dictionary, input});
+
+        // then
+        assertThat(outContent.toString()).isEqualTo("Usage: ./numbers.sh <dictionary-file> <input-file>\n");
+    }
+
+    @Test
+    public void shouldExitIfInputFileIsNull() throws Exception {
+        // given
+        final String dictionary = "src/test/resources/dictionary2.txt";
+        final String input      = null;
+
+        // when
+        main(new String[]{dictionary, input});
+
+        // then
+        assertThat(outContent.toString()).isEqualTo("Usage: ./numbers.sh <dictionary-file> <input-file>\n");
+    }
 }

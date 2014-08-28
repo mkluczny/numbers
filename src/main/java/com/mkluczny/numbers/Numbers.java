@@ -24,19 +24,22 @@ public class Numbers {
 
     public static void main(final String[] args) throws FileNotFoundException {
 
-        if (args.length != 2) {
-            logErrorAndExit("Usage: ./numbers.sh <dictionary-file> <input-file>", 0);
+        if (args.length != 2 || args[0] == null || args[1] == null) {
+            logError("Usage: ./numbers.sh <dictionary-file> <input-file>");
+            return;
         }
 
         final File dictionaryFile = new File(args[0]);
         final File inputFile      = new File(args[1]);
 
         if (!dictionaryFile.exists()) {
-            logErrorAndExit("Directory file not found", 0);
+            logError("Dictionary file not found");
+            return;
         }
 
         if (!inputFile.exists()) {
-            logErrorAndExit("Input file not found", 0);
+            logError("Input file not found");
+            return;
         }
 
         try {
@@ -49,7 +52,8 @@ public class Numbers {
             }
         } catch (Exception e) {
             LOG.fatal(e);
-            logErrorAndExit("Fatal error occurred", 1);
+            logError("Fatal error occurred");
+            return;
         }
 
     }
@@ -58,9 +62,8 @@ public class Numbers {
      *  Private
      */
 
-    private static void logErrorAndExit(final String error, final int statusCode) {
+    private static void logError(final String error) {
         LOG.error(error);
         System.out.println(error);
-        System.exit(statusCode);
     }
 }

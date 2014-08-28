@@ -49,7 +49,7 @@ public class PhoneNumberEncoder {
      *  Private
      */
 
-    public final void encode(final LinkedList<String> words, final char[] digits, final String originalNumber) {
+    public final void encode(final LinkedList<String> words, final char[] digits, final String number) {
 
         boolean canAddNumber = true;
 
@@ -57,15 +57,15 @@ public class PhoneNumberEncoder {
 
             final String code = new String(copyOfRange(digits, 0, i));
 
-            if (dictionary.containsKey(code)) {
+            if (dictionary.containsEncoding(code)) {
 
                 canAddNumber = false;
 
                 for (String word : dictionary.get(code)) {
                     if (code.length() == digits.length) {
-                        print(union(words, word), originalNumber);
+                        print(union(words, word), number);
                     } else {
-                        encode(union(words, word), copyOfRange(digits, i, digits.length), originalNumber);
+                        encode(union(words, word), copyOfRange(digits, i, digits.length), number);
                     }
                 }
             }
@@ -76,14 +76,14 @@ public class PhoneNumberEncoder {
             final String word = new String(copyOfRange(digits, 0, 1));
 
             if (digits.length > 1) {
-                encode(union(words, word), copyOfRange(digits, 1, digits.length), originalNumber);
+                encode(union(words, word), copyOfRange(digits, 1, digits.length), number);
             } else {
-                print(union(words, word), originalNumber);
+                print(union(words, word), number);
             }
         }
     }
 
-    private void print(final List<String> words, final String originalNumber) {
+    private void print(final List<String> words, final String number) {
         final StringBuilder builder     = new StringBuilder();
         final Iterator<String> iterator = words.iterator();
 
@@ -95,7 +95,7 @@ public class PhoneNumberEncoder {
             }
         }
 
-        System.out.println(format("%s: %s", originalNumber, builder.toString()));
+        System.out.println(format("%s: %s", number, builder.toString()));
     }
 
     private boolean isLastElementNumeric(final LinkedList<String> words) {

@@ -63,15 +63,15 @@ public class Dictionary {
         return this;
     }
 
-    public List<String> get(final String key) {
-        return dictionary.get(key);
+    public List<String> get(final String encoding) {
+        return dictionary.get(encoding);
     }
 
-    public boolean containsKey(final String key) {
-        return dictionary.containsKey(key);
+    public boolean containsEncoding(final String encoding) {
+        return dictionary.containsKey(encoding);
     }
 
-    public Set<String> keySet() {
+    public Set<String> encodingSet() {
         return dictionary.keySet();
     }
 

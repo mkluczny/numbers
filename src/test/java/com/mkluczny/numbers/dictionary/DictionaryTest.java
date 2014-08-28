@@ -33,7 +33,7 @@ public class DictionaryTest {
         dictionary.build(words);
 
         // then
-        assertThat(dictionary.keySet().size()).isEqualTo(2);
+        assertThat(dictionary.encodingSet().size()).isEqualTo(2);
         assertThat((dictionary.get("00"))).isEqualTo(wordsEncodedToZeroZero);
         assertThat((dictionary.get("234"))).isEqualTo(wordsEncodedToTwoThreeFour);
     }
