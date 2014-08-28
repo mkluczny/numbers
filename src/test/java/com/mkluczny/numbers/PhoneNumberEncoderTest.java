@@ -82,7 +82,7 @@ public class PhoneNumberEncoderTest {
 
         // when
         for (String number : numbers) {
-            encoder.encode(new LinkedList<String>(), wordEncoder.normalize(number).toCharArray(), number);
+            encoder.encode(number);
         }
 
         // then
