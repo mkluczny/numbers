@@ -6,6 +6,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
@@ -77,6 +78,12 @@ public class PhoneNumberIterator implements Iterator<String> {
 
     @Override
     public String next() {
+
+        if (number == null && !hasNext()) {
+            closeQuietly();
+            throw new NoSuchElementException("No more phone numbers");
+        }
+
         final String nextNumber = number;
         number = null;
         return nextNumber;
