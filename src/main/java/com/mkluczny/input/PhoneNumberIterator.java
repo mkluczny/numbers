@@ -3,22 +3,42 @@ package com.mkluczny.input;
 import java.io.*;
 import java.util.Iterator;
 import java.util.function.Consumer;
+import java.util.regex.Pattern;
 
 public class PhoneNumberIterator implements Iterator<String> {
 
-    private final BufferedReader bufferedReader;
-    private String currentLine;
+    /*
+     *  CONSTANTS
+     */
+
+    public static final int     MAX_PHONE_NUMBER_LENGTH = 50;
+    public static final Pattern PHONE_NUMBER_FORMAT     = Pattern.compile("^[0-9\\/\\-]+$");
+
+    /*
+     *  Private Fields
+     */
+
+    private final BufferedReader reader;
+    private String number;
     private boolean finished;
 
-    public PhoneNumberIterator(final String filename) throws FileNotFoundException {
-        bufferedReader  = new BufferedReader(new FileReader(new File(filename)));
-        finished        = false;
+    /*
+     *  Constructor
+     */
+
+    public PhoneNumberIterator(final BufferedReader reader) {
+        this.reader     = reader;
+        this.finished   = false;
     }
+
+    /*
+     *  Public
+     */
 
     @Override
     public boolean hasNext() {
         try {
-            if (currentLine != null) {
+            if (number != null) {
                 return true;
             }
 
@@ -26,14 +46,22 @@ public class PhoneNumberIterator implements Iterator<String> {
                 return false;
             }
 
-            currentLine = bufferedReader.readLine();
+            while(true) {
 
-            if (currentLine != null) {
-                return true;
-            } else {
-                finished = true;
-                return false;
+                number = reader.readLine();
+
+                if (number == null) {
+                    closeQuietly();
+                    return false;
+                }
+
+                if (isValidPhoneNumber(number)) {
+                    return true;
+                } else {
+                    number = null;
+                }
             }
+
         } catch (IOException ioe) {
             closeQuietly();
             throw new IllegalStateException(ioe.toString());
@@ -42,9 +70,9 @@ public class PhoneNumberIterator implements Iterator<String> {
 
     @Override
     public String next() {
-        final String line = currentLine;
-        currentLine = null;
-        return line;
+        final String nextNumber = number;
+        number = null;
+        return nextNumber;
     }
 
     @Override
@@ -57,15 +85,30 @@ public class PhoneNumberIterator implements Iterator<String> {
         throw new UnsupportedOperationException("Remove unsupported on PhoneNumberIterator");
     }
 
+    /*
+     *  Private
+     */
+
     private void closeQuietly() {
-        currentLine = null;
-        finished = true;
+        number      = null;
+        finished    = true;
 
         try {
-            bufferedReader.close();
-
+            reader.close();
         } catch (Exception e) {
 
         }
+    }
+
+    private boolean isValidPhoneNumber(final String number) {
+        if (number.length() > MAX_PHONE_NUMBER_LENGTH) {
+            return false;
+        }
+
+        if (!PHONE_NUMBER_FORMAT.matcher(number).matches()) {
+            return false;
+        }
+
+        return true;
     }
 }
