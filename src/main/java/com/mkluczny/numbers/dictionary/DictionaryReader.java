@@ -22,21 +22,14 @@ public class DictionaryReader {
      *  Public
      */
 
-    public Dictionary load(final String filename) {
+    public Dictionary load(final File file) {
 
-        LOG.info(format("Loading dictionary from file %s", filename));
+        LOG.info(format("Loading dictionary from file %s", file.getName()));
 
         try {
-            final File file = new File(filename);
-
-            if (!file.exists()) {
-                LOG.error(format("File %s does not exist", filename));
-                return null;
-            }
-
             return new Dictionary().build(readWords(file));
         } catch (Exception e) {
-            LOG.error(format("There was a problem loading dictionary from file %s", filename), e);
+            LOG.error(format("There was a problem loading dictionary from file %s", file.getName()), e);
             return null;
         }
     }

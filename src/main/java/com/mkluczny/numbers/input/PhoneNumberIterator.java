@@ -1,4 +1,7 @@
-package com.mkluczny.input;
+package com.mkluczny.numbers.input;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.util.Iterator;
@@ -17,6 +20,8 @@ public class PhoneNumberIterator implements Iterator<String> {
     /*
      *  Private Fields
      */
+
+    private static final Logger LOG = LogManager.getLogger(PhoneNumberIterator.class);
 
     private final BufferedReader reader;
     private String number;
@@ -58,6 +63,7 @@ public class PhoneNumberIterator implements Iterator<String> {
                 if (isValidPhoneNumber(number)) {
                     return true;
                 } else {
+                    LOG.warn(String.format("Invalid phone number [%s]", number));
                     number = null;
                 }
             }

@@ -3,6 +3,8 @@ package com.mkluczny.numbers.dictionary;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
+
 import static org.fest.assertions.Assertions.assertThat;
 
 public class DictionaryReaderTest {
@@ -17,7 +19,7 @@ public class DictionaryReaderTest {
     @Test
     public void shouldLoadDictionary() throws Exception {
         // when
-        final Dictionary dictionary = reader.load("src/test/resources/dictionary.txt");
+        final Dictionary dictionary = reader.load(new File("src/test/resources/dictionary.txt"));
 
         // then
         assertThat(dictionary).isNotNull();

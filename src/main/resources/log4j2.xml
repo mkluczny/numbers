@@ -3,7 +3,7 @@
     <Appenders>
         <File name="File" fileName="logs/numbers.log">
             <PatternLayout>
-                <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
+                <Pattern>%d{ABSOLUTE} [%p] [%c{1}] %m%n</Pattern>
             </PatternLayout>
         </File>
     </Appenders>
