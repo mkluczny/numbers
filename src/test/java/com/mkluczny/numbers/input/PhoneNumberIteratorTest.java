@@ -1,5 +1,6 @@
 package com.mkluczny.numbers.input;
 
+import junit.framework.Assert;
 import org.fest.assertions.Assertions;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,6 +10,7 @@ import java.io.StringReader;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -23,8 +25,8 @@ public class PhoneNumberIteratorTest {
     public void shouldSkipToLongNumbers() throws Exception {
         // given
         final String numbers =  "111111111111111111111111111111111111111111111111111\n" +   //too long
-                                "33333333333333333333333333333333333333333333333333\n" +    // exactly 50 characters
-                                "222222222222222222222222222222222222222222222222222";      // too long
+                "33333333333333333333333333333333333333333333333333\n" +    // exactly 50 characters
+                "222222222222222222222222222222222222222222222222222";      // too long
 
         final BufferedReader reader       = new BufferedReader(new StringReader(numbers));
         final Iterator<String> iterator   = new PhoneNumberIterator(reader);
@@ -43,8 +45,8 @@ public class PhoneNumberIteratorTest {
     public void shouldSkipNumbersNotMatchingPhoneNumberPattern() throws Exception {
         // given
         final String numbers =  "\n" +          // empty line
-                                "asd\n" +       // invalid format
-                                "123-123/12";   // OK
+                "asd\n" +       // invalid format
+                "123-123/12";   // OK
 
         final BufferedReader reader       = new BufferedReader(new StringReader(numbers));
         final Iterator<String> iterator   = new PhoneNumberIterator(reader);
@@ -63,8 +65,8 @@ public class PhoneNumberIteratorTest {
     public void shouldIterateOverAllPhoneNumbers() throws Exception {
         // given
         final String numbers =  "123\n" +
-                                "123---1\n" +
-                                "123-123/12";
+                "123---1\n" +
+                "123-123/12";
 
         final BufferedReader reader       = new BufferedReader(new StringReader(numbers));
         final Iterator<String> iterator   = new PhoneNumberIterator(reader);
@@ -78,5 +80,18 @@ public class PhoneNumberIteratorTest {
         // then
         assertThat(results.size()).isEqualTo(3);
         assertThat(results).containsOnly("123", "123---1", "123-123/12");
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void shouldThrowExceptionWhenRequestingMoreNumbersThanAvailable() throws Exception {
+        // given
+        final BufferedReader reader       = new BufferedReader(new StringReader(""));
+        final Iterator<String> iterator   = new PhoneNumberIterator(reader);
+        final List<String> results        = new LinkedList<String>();
+
+        // when
+        while(true) {
+            results.add(iterator.next());
+        }
     }
 }
