@@ -7,43 +7,43 @@ import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import static java.util.Arrays.asList;
 import static org.fest.assertions.Assertions.assertThat;
 
-public class EncoderTest {
+public class PhoneNumberEncoderTest {
 
-    private Encoder encoder;
+    private PhoneNumberEncoder encoder;
     private WordEncoder wordEncoder;
 
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
 
-    private static final List<String> words = Arrays.asList(
-            "an"    ,
-            "blau"  ,
-            "Bo\""  ,
-            "Boot"  ,
-            "bo\"s" ,
-            "da"    ,
-            "Fee"   ,
-            "fern"  ,
-            "Fest"  ,
-            "fort"  ,
-            "je"    ,
+    private static final List<String> words = asList(
+            "an",
+            "blau",
+            "Bo\"",
+            "Boot",
+            "bo\"s",
+            "da",
+            "Fee",
+            "fern",
+            "Fest",
+            "fort",
+            "je",
             "jemand",
-            "mir"   ,
-            "Mix"   ,
-            "Mixer" ,
-            "Name"  ,
-            "neu"   ,
-            "o\"d"  ,
-            "Ort"   ,
-            "so"    ,
-            "Tor"   ,
-            "Torf"  ,
+            "mir",
+            "Mix",
+            "Mixer",
+            "Name",
+            "neu",
+            "o\"d",
+            "Ort",
+            "so",
+            "Tor",
+            "Torf",
             "Wasser"
     );
 
@@ -59,14 +59,14 @@ public class EncoderTest {
         System.setOut(new PrintStream(outContent));
         System.setErr(new PrintStream(errContent));
 
-        encoder     = new Encoder(dictionary);
+        encoder     = new PhoneNumberEncoder(dictionary);
         wordEncoder = new WordEncoder();
     }
 
     @Test
     public void shouldEncodeWord() throws Exception {
         // given
-        final List<String> numbers = Arrays.asList("112", "5624-82", "4824", "0721/608-4067", "10/783--5", "1078-913-5", "381482", "04824");
+        final List<String> numbers = asList("112", "5624-82", "4824", "0721/608-4067", "10/783--5", "1078-913-5", "381482", "04824");
         final String output = "5624-82: mir Tor\n" +
                               "5624-82: Mix Tor\n" +
                               "4824: Tor 4\n" +

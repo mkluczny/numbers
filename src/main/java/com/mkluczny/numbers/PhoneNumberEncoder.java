@@ -1,6 +1,9 @@
 package com.mkluczny.numbers;
 
 import com.mkluczny.numbers.dictionary.Dictionary;
+import com.mkluczny.numbers.dictionary.WordEncoder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -9,24 +12,41 @@ import java.util.List;
 import static java.lang.String.format;
 import static java.util.Arrays.copyOfRange;
 
-public class Encoder {
+public class PhoneNumberEncoder {
 
     /*
      *  Private Fields
      */
 
+    private static final Logger LOG = LogManager.getLogger(PhoneNumberEncoder.class);
+
     private final Dictionary dictionary;
+    private final WordEncoder wordEncoder;
 
     /*
      *  Constructors
      */
 
-    public Encoder(final Dictionary dictionary) {
-        this.dictionary = dictionary;
+    public PhoneNumberEncoder(final Dictionary dictionary) {
+        this.dictionary     = dictionary;
+        this.wordEncoder    = new WordEncoder();
     }
 
     /*
      *  Public
+     */
+
+    public final void encode(final String number) {
+
+        if (LOG.isDebugEnabled()) {
+            LOG.debug(format("Encoding number: [%s]", number));
+        }
+
+        encode(new LinkedList<String>(), wordEncoder.normalize(number).toCharArray(), number);
+    }
+
+    /*
+     *  Private
      */
 
     public final void encode(final LinkedList<String> words, final char[] digits, final String originalNumber) {
@@ -62,10 +82,6 @@ public class Encoder {
             }
         }
     }
-
-    /*
-     *  Private
-     */
 
     private void print(final List<String> words, final String originalNumber) {
         final StringBuilder builder     = new StringBuilder();
