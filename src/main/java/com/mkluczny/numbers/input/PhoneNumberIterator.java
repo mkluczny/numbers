@@ -3,7 +3,8 @@ package com.mkluczny.numbers.input;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
